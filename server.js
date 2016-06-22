@@ -1,17 +1,19 @@
-import express from 'express';
-import { apolloServer } from 'apollo-server';
-import Schema from './data/schema';
-import Mocks from './data/mocks';
+import express from 'express'
+const apollo = require('apollo-server')
+import Schema from './data/schema'
+import mocks from './data/mocks'
 
-const GRAPHQL_PORT = 8080;
+const GRAPHQL_PORT = 8080
 
-const graphQLServer = express();
-graphQLServer.use('/graphql', apolloServer({
+const app = express()
+const gqlServer = apollo.apolloServer({
   graphiql: true,
   pretty: true,
   schema: Schema,
-  mocks: Mocks,
-}));
-graphQLServer.listen(GRAPHQL_PORT, () => console.log(
-  `GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}/graphql`
-));
+  mocks
+})
+
+app.use('/', gqlServer)
+app.listen(GRAPHQL_PORT, () => console.log(
+  `GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}`
+))
